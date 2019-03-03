@@ -1,0 +1,237 @@
+﻿@{
+    ViewBag.Title = "Create a seating plan";
+}
+
+<div class="container">
+	
+	<form method="post" enctype="multipart/form-data" class="form-upload site-section js-createForm">
+
+
+		<label for="">Upload your classroom template here (leave blank for default)</label>
+		<div class="file_input_div site-section">
+			<div class="file_input">
+				<label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+					<i class="material-icons">file_upload</i>
+					<input id="file_input_file" class="none file_input_file" type="file" name="template" />
+				</label>
+			</div>
+			<div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
+				<input class="file_input_text mdl-textfield__input" type="text" disabled readonly/>
+				<label class="mdl-textfield__label" for="file_input_text"></label>
+			</div>
+		</div>
+
+		<label for="">Upload your student data here</label>
+		<div class="file_input_div site-section">
+			<div class="file_input">
+				<label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+					<i class="material-icons">file_upload</i>
+					<input id="file_input_file" class="none file_input_file js-planData" type="file" name="planData" />
+				</label>
+			</div>
+			<div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
+				<input class="file_input_text mdl-textfield__input" type="text" disabled readonly />
+				<label class="mdl-textfield__label" for="file_input_text"></label>
+			</div>
+		</div>
+		<div class="actions">
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-button--accent">Create</button>
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-button--accent js-getSheetInfo">Create with info</button>
+		</div>
+
+	</form>
+	
+	
+	<div class="js-resultsWrapper">
+
+		@*<div class="mdl-card mdl-card--full mdl-shadow--2dp site-section mdl-card--warning">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text">seating-plan-2018050421.pptx created with warnings</h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				<p>This seating plan was created successfully with no warnings</p>
+				<div class="item"><span class="l">20</span><span class=""> seats</span></div>
+				<div class="item"><span class="l">27</span><span class=""> students</span></div>
+			</div>
+			<div class="mdl-card__actions mdl-card--border">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+			</div>
+		</div>
+
+		<div class="mdl-card mdl-card--full mdl-shadow--2dp site-section mdl-card--error">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text">seating-plan-2018050421.pptx created with errors</h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				<p>This seating plan was created successfully with no warnings</p>
+				<div class="item"><span class="l">25</span><span class=""> seats</span></div>
+				<div class="item"><span class="l">23</span><span class=""> students</span></div>
+			</div>
+			<div class="mdl-card__actions mdl-card--border">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+			</div>
+		</div>
+
+		<div class="mdl-card mdl-card--full mdl-shadow--2dp site-section mdl-card--success">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text">seating-plan-2018050421.pptx created</h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				<p>This seating plan was created successfully with no warnings</p>
+				<div class="item"><span class="l">25</span><span class=""> seats</span></div>
+				<div class="item"><span class="l">23</span><span class=""> students</span></div>
+			</div>
+			<div class="mdl-card__actions mdl-card--border">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+			</div>
+		</div>
+
+
+
+		<table>
+			<tbody class="js-resultsBody"></tbody>
+		</table>*@
+
+	</div>
+
+	<h5>How to set up your template</h5>
+	<ul>
+		<li>Add a textbox for each seating position containing the order and the prefix <span class="example">POS</span>. For example: <span class="example">POS1</span>, <span class="example">POS2</span></li>
+		<li>Add a textbox for the group/class name with the content <span class="example">CLASSNAME</span></li>
+	</ul>
+	<p>Download the <a href="/ClassroomTemplate.pptx">example powerpoint template</a>.</p>
+	<img src="/Content/images/classroomTemplate.png" alt="Classroom Template screenshot" />
+	
+
+</div>
+
+
+
+
+<script>
+
+	//-- Based on https://codepen.io/alexandergaziev/pen/JdVQQm
+
+	class FileInputMgr {
+		constructor(el) {
+
+			var me = this;
+			me.el = el;
+			me.fileInput = me.el.querySelector('.file_input_file');
+			me.fileInputText = me.el.querySelector('.file_input_text');
+
+			me.fileInput.addEventListener('change',
+				function() {
+
+					var str = me.fileInput.value;
+					var i;
+					if (str.lastIndexOf('\\')) {
+						i = str.lastIndexOf('\\') + 1;
+					} else if (str.lastIndexOf('/')) {
+						i = str.lastIndexOf('/') + 1;
+					}
+					me.fileInputText.value = str.slice(i, str.length);
+
+					if (me.fileInputText.value.length !== 0) {
+						if (!me.el.classList.contains("is-focused")) {
+							me.el.classList.add('is-focused');
+						}
+					} else {
+						if (me.el.classList.contains("is-focused")) {
+							me.el.classList.remove('is-focused');
+						}
+					}
+
+				});
+		}
+	}
+	
+	var fileMgrPlugin = {
+		init: function() {
+			this.instances = document.querySelectorAll('.file_input_div');
+			this.instances.forEach(function(el) {
+				new FileInputMgr(el);
+			});
+		}
+	}
+	fileMgrPlugin.init();
+
+
+
+
+
+
+
+
+
+	var createSheetManager = {
+
+		init: function () {
+
+			this.frm = document.querySelector('.js-createForm');
+			this.planData = this.frm.querySelector('.js-planData');
+
+			this.resultsWrapper = document.querySelector('.js-resultsWrapper');
+			this.resultsBody = document.querySelector('.js-resultsBody');
+
+			this.initSheetInfo();
+
+		},
+
+		initSheetInfo: function () {
+
+			var me = this;
+
+			document.querySelector('.js-getSheetInfo').addEventListener('click',
+
+				function (e) {
+
+					e.preventDefault();
+
+					if (me.planData.files.length === 0) {
+						alert('Please select a data file to upload');
+						return;
+					}
+
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST', '/create/indexwithinfo');
+					xhr.onload = function (r) {
+
+						me.handleSheetInfo(JSON.parse(this.responseText));
+
+					};
+
+					var formData = new FormData(me.frm);
+					xhr.send(formData);
+
+				});
+		},
+
+		handleSheetInfo: function (sheetInfo) {
+
+			console.log(sheetInfo);
+
+			var template = $('#ResultTemplate').html();
+			Mustache.parse(template);   // optional, speeds up future uses
+			var rendered = Mustache.render(template, sheetInfo);
+
+			this.resultsWrapper.innerHTML = rendered;
+
+			//if (sheetInfo.Succes) {
+			//	document.querySelector('.js-download').click();
+			//}
+		}
+
+	}
+
+	createSheetManager.init();
+
+</script>
+<script id="ResultTemplate" type="html/template">
+	<div class="result">
+		
+		<span>File name {{FileName}}</span>
+		<a href="data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,{{FileData}}" download="{{FileName}}">Download</a>
+
+	</div>
+</script>

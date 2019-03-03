@@ -1,0 +1,123 @@
+﻿/*body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}*/
+
+/* Set padding to keep content from hitting the edges */
+/*.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}*/
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+
+
+
+
+
+
+
+
+
+body {
+    font-family: 'Roboto', 'Helvetica', arial;
+}
+
+.container {
+
+    width: 640px;
+    margin: auto;
+
+}
+
+
+.form-upload {
+    margin-top: 30px;
+}
+
+.container .site-section {
+    margin-bottom: 30px;
+}
+
+
+
+.mdl-card--full {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.mdl-card--full .item .l {
+    font-weight: 700;
+}
+
+.example {
+    border-radius: 2px;
+    background: #efefef;
+    padding: 4px 5px 2px 5px;
+    color: #333;
+}
+
+
+.mdl-layout-title {
+    text-transform: uppercase;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .logo {
+        fill: #fff;
+        margin-right: 10px;
+    }
+
+
+/*  Layout
+----------------------------------*/
+.actions {
+    padding-top: 30px;
+    text-align: right;
+}
+
+
+/*  File Input
+----------------------------------*/
+.file_input_div {
+    margin: auto;
+    /*width: 250px;*/
+    height: 40px;
+    margin-top: 10px 
+}
+
+.file_input_text {
+    max-width: 550px;
+}
+
+
+.file_input {
+    float: left;
+}
+
+#file_input_text_div {
+    width: 550px;
+    margin-top: -8px;
+    margin-left: 5px;
+}
+
+.none {
+    display: none;
+}
